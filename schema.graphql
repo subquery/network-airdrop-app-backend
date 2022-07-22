@@ -1,0 +1,39 @@
+type Era @entity {
+  id: ID! # Era id
+  startTime: Date! # Block timestamp the Era is started
+  endTime: Date # Block timestamp that the successive Era is started
+  forceNext: Boolean # True when force save previous Era
+  createAt: String #topicHandler:block:Txhash
+  updateAt: String #topicHandler:block:Txhash
+}
+
+type Airdrop @entity {
+  id: ID! # Round ID
+  tokenAddress: String!
+  startTime: Date! # Block timestamp the Era is started
+  endTime: Date! # Block timestamp that the successive Era is started
+  withdrawAmount: BigInt
+  hasWithdrawn: Boolean
+  createAt: String #topicHandler:block:Txhash
+  updateAt: String #topicHandler:block:Txhash
+}
+
+enum AirdropClaimStatus {
+  CLAIMED
+  UNCLAIMED
+}
+
+type AirdropUser @entity {
+  id: ID! # roundId:userAccount
+  address: String!
+  airdrop: Airdrop!
+  amount: BigInt!
+  status: AirdropClaimStatus!
+  createAt: String #topicHandler:block:Txhash
+  updateAt: String #topicHandler:block:Txhash
+}
+
+type Exception @entity {
+  id: ID! #Tx hash
+  error: String!
+}

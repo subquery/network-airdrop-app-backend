@@ -1,0 +1,77 @@
+specVersion: 1.0.0
+name: subquery-query-registry-project
+version: 1.0.0
+runner:
+  node:
+    name: '@subql/node'
+    version: '>=1.1.0'
+  query:
+    name: '@subql/query'
+    version: '>=1.1.0'
+description: 'Query registry project for SubQuery Testnet'
+repository: ''
+schema:
+  file: ./schema.graphql
+network:
+  chainId: '0x5c562e6300954998233c9a40b6b86f3028977e6d32d0da1af207738d19f98c1b' #mandala-tc7
+  endpoint: 'wss://mandala-tc7-rpcnode.aca-dev.network/ws'
+  dictionary: 'https://api.subquery.network/sq/subquery/acala-mandala-tc7-dictionary'
+
+  chaintypes:
+    file: ./dist/chaintypes.js
+
+x-frontier: &frontier
+  kind: substrate/AcalaEvm
+  startBlock: 1565490
+  processor: &frontier-processor
+    file: './dist/acalaEvm.js'
+  assets:
+    eraManager:
+      file: ./node_modules/@subql/contract-sdk/artifacts/contracts/EraManager.sol/EraManager.json
+    airdropper:
+      file: ./node_modules/@subql/contract-sdk/artifacts/contracts/Airdropper.sol/Airdropper.json
+
+dataSources:
+  - <<: *frontier
+    processor:
+      <<: *frontier-processor
+      options:
+        abi: eraManager
+        address: '0xbD9bb7981a069B39f2A9f61c3e8c700E84B257EE'
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleNewEra
+          kind: substrate/AcalaEvmEvent
+          filter:
+            topics:
+              - NewEraStart(uint256 indexed era, address caller)
+  - <<: *frontier
+    processor:
+      <<: *frontier-processor
+      options:
+        abi: airdropper
+        address: '0xA16a799D863206f5c165759DAd83A612da39a773'
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleRoundCreated
+          kind: substrate/AcalaEvmEvent
+          filter:
+            topics:
+              - RoundCreated(uint256 indexed roundId, address tokenAddress, uint256 roundStartTime, uint256 roundDeadline)
+        - handler: handleAddAirdrop
+          kind: substrate/AcalaEvmEvent
+          filter:
+            topics:
+              - AddAirdrop(address indexed addr, uint256 roundId, uint256 amount)
+        - handler: handleAirdropClaimed
+          kind: substrate/AcalaEvmEvent
+          filter:
+            topics:
+              - AirdropClaimed(address indexed addr, uint256 roundId, uint256 amount)
+        - handler: handleRoundSettled
+          kind: substrate/AcalaEvmEvent
+          filter:
+            topics:
+              - RoundSettled(uint256 indexed roundId, address settleDestination, uint256 unclaimAmount);
