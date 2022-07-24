@@ -1,3 +1,6 @@
+// Copyright 2020-2022 SubQuery Pte Ltd authors & contributors
+// SPDX-License-Identifier: Apache-2.0
+
 import { AcalaEvmEvent } from '@subql/acala-evm-processor';
 import testnetAddresses from '@subql/contract-sdk/publish/testnet.json';
 import { Exception } from '../types';
