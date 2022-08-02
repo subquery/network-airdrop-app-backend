@@ -81,7 +81,7 @@ export async function handleAddAirdrop(
 
     const airdropUser = AirdropUser.create({
       id: getAirdropUserId(roundIdString, addr),
-      addressId: addr,
+      userId: addr,
       airdropId: roundId.toString(),
       amount: amount.toBigInt(),
       status: AirdropClaimStatus.UNCLAIMED,

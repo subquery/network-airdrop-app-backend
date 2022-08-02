@@ -25,7 +25,7 @@ enum AirdropClaimStatus {
 
 type AirdropUser @entity {
   id: ID! # roundId:userAccount
-  address: User!
+  user: User!
   airdrop: Airdrop!
   amount: BigInt!
   status: AirdropClaimStatus!
