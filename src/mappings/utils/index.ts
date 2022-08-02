@@ -3,7 +3,7 @@
 
 import { AcalaEvmEvent } from '@subql/acala-evm-processor';
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
-import { Address, Exception } from '../../types';
+import { User, Exception } from '../../types';
 
 export const getUpsertAt = (
   handler: string,
@@ -32,30 +32,31 @@ export const recordException = async (
 export const toBigNumber = (amount: BigNumberish) =>
   BigNumber.from(amount.toString());
 
-export const upsertAddress = async (
+export const upsertUser = async (
   address: string,
   airdropAmount: BigNumberish,
   claimedAmount: BigNumberish,
   event: AcalaEvmEvent<any>
 ) => {
-  const account = await Address.get(address);
+  const HANDLER = 'upsertUser';
+  const user = await User.get(address);
 
-  if (account) {
-    account.totalAirdropAmount = toBigNumber(account.totalAirdropAmount)
+  if (user) {
+    user.totalAirdropAmount = toBigNumber(user.totalAirdropAmount)
       .add(toBigNumber(airdropAmount))
       .toBigInt();
-    account.claimedAmount = toBigNumber(account.claimedAmount)
+    user.claimedAmount = toBigNumber(user.claimedAmount)
       .add(toBigNumber(claimedAmount))
       .toBigInt();
-    account.updateAt = getUpsertAt('upsertAddress', event);
+    user.updateAt = getUpsertAt(HANDLER, event);
 
-    await account.save();
+    await user.save();
   } else {
-    logger.info(`upsertAddress - create: ${event.transactionHash}`);
-    const newAddress = new Address(address);
+    logger.info(`${HANDLER} - create: ${event.transactionHash}`);
+    const newAddress = new User(address);
     newAddress.totalAirdropAmount = toBigNumber(airdropAmount).toBigInt();
     newAddress.claimedAmount = toBigNumber(claimedAmount).toBigInt();
-    newAddress.createAt = getUpsertAt('upsertAddress', event);
+    newAddress.createAt = getUpsertAt(HANDLER, event);
     await newAddress.save();
   }
 };

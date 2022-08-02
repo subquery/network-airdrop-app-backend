@@ -14,7 +14,7 @@ import {
   getErrorText,
   getUpsertAt,
   recordException,
-  upsertAddress,
+  upsertUser,
 } from './utils';
 
 const getAirdropUserId = (roundId: string, address: string) =>
@@ -77,7 +77,7 @@ export async function handleAddAirdrop(
   const airdrop = await Airdrop.get(roundIdString);
 
   if (airdrop) {
-    await upsertAddress(addr, amount, '0', event);
+    await upsertUser(addr, amount, '0', event);
 
     const airdropUser = AirdropUser.create({
       id: getAirdropUserId(roundIdString, addr),
@@ -132,7 +132,7 @@ export async function handleAirdropClaimed(
     return;
   }
 
-  await upsertAddress(addr, '0', amount.toString(), event);
+  await upsertUser(addr, '0', amount.toString(), event);
 
   airdropUser.status = AirdropClaimStatus.CLAIMED;
   airdropUser.updateAt = getUpsertAt(HANDLER, event);
