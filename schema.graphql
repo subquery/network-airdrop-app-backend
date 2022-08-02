@@ -25,10 +25,18 @@ enum AirdropClaimStatus {
 
 type AirdropUser @entity {
   id: ID! # roundId:userAccount
-  address: String!
+  user: User!
   airdrop: Airdrop!
   amount: BigInt!
   status: AirdropClaimStatus!
+  createAt: String #topicHandler:block:Txhash
+  updateAt: String #topicHandler:block:Txhash
+}
+
+type User @entity {
+  id: ID! # userAccount
+  totalAirdropAmount: BigInt # Claimed + unClaimed + unlocked + locked
+  claimedAmount: BigInt # claim total
   createAt: String #topicHandler:block:Txhash
   updateAt: String #topicHandler:block:Txhash
 }
