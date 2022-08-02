@@ -10,7 +10,12 @@ import {
 } from '@subql/contract-sdk/typechain/Airdropper';
 import assert from 'assert';
 import { Airdrop, AirdropClaimStatus, AirdropUser } from '../types';
-import { getErrorText, getUpsertAt, recordException } from './utils';
+import {
+  getErrorText,
+  getUpsertAt,
+  recordException,
+  upsertAddress,
+} from './utils';
 
 const getAirdropUserId = (roundId: string, address: string) =>
   `${roundId}:${address}`;
@@ -72,9 +77,11 @@ export async function handleAddAirdrop(
   const airdrop = await Airdrop.get(roundIdString);
 
   if (airdrop) {
+    await upsertAddress(addr, amount, '0', event);
+
     const airdropUser = AirdropUser.create({
       id: getAirdropUserId(roundIdString, addr),
-      address: addr,
+      addressId: addr,
       airdropId: roundId.toString(),
       amount: amount.toBigInt(),
       status: AirdropClaimStatus.UNCLAIMED,
@@ -124,6 +131,8 @@ export async function handleAirdropClaimed(
     logger.error(error);
     return;
   }
+
+  await upsertAddress(addr, '0', amount.toString(), event);
 
   airdropUser.status = AirdropClaimStatus.CLAIMED;
   airdropUser.updateAt = getUpsertAt(HANDLER, event);
