@@ -22,7 +22,7 @@
   "dependencies": {
     "@acala-network/type-definitions": "^4.1.1",
     "@ethersproject/bignumber": "^5.6.2",
-    "@subql/acala-evm-processor": "^0.0.3-1",
+    "@subql/acala-evm-processor": "^0.0.3-2",
     "@subql/contract-sdk": "0.10.1-1"
   },
   "devDependencies": {
