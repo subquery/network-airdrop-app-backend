@@ -55,3 +55,6 @@ Thumbs.db
 
 .data
 .eslintcache
+
+# IPFS publish 
+.project-cid
