@@ -14,7 +14,7 @@ schema:
   file: ./schema.graphql
 network:
   chainId: '0x5c562e6300954998233c9a40b6b86f3028977e6d32d0da1af207738d19f98c1b' #mandala-tc7
-  endpoint: 'wss://mandala-tc7-rpcnode.aca-dev.network/ws'
+  endpoint: 'wss://acala-mandala.api.onfinality.io/public-ws'
   dictionary: 'https://api.subquery.network/sq/subquery/acala-mandala-tc7-dictionary'
 
   chaintypes:
@@ -22,7 +22,7 @@ network:
 
 x-frontier: &frontier
   kind: substrate/AcalaEvm
-  startBlock: 1565490
+  startBlock: 1748143
   processor: &frontier-processor
     file: './dist/acalaEvm.js'
   assets:
@@ -37,7 +37,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: eraManager
-        address: '0xbD9bb7981a069B39f2A9f61c3e8c700E84B257EE'
+        address: '0xD9d0EB30589A50642F3200E3f41C462B63369364'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -51,7 +51,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: airdropper
-        address: '0xA16a799D863206f5c165759DAd83A612da39a773'
+        address: '0x32Bd2f73286F6329B1Cf4D5Abf41608D829be867'
     mapping:
       file: ./dist/index.js
       handlers:
