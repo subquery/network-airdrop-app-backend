@@ -21,13 +21,11 @@ network:
     file: ./dist/chaintypes.js
 
 x-frontier: &frontier
-  kind: substrate/AcalaEvm
+  kind: substrate/FrontierEvm
   startBlock: 1748143
   processor: &frontier-processor
-    file: './dist/acalaEvm.js'
+    file: './dist/frontierEvm.js'
   assets:
-    eraManager:
-      file: ./node_modules/@subql/contract-sdk/artifacts/contracts/EraManager.sol/EraManager.json
     airdropper:
       file: ./node_modules/@subql/contract-sdk/artifacts/contracts/Airdropper.sol/Airdropper.json
 
@@ -42,22 +40,22 @@ dataSources:
       file: ./dist/index.js
       handlers:
         - handler: handleRoundCreated
-          kind: substrate/AcalaEvmEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - RoundCreated(uint256 indexed roundId, address tokenAddress, uint256 roundStartTime, uint256 roundDeadline)
         - handler: handleAddAirdrop
-          kind: substrate/AcalaEvmEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - AddAirdrop(address indexed addr, uint256 roundId, uint256 amount)
         - handler: handleAirdropClaimed
-          kind: substrate/AcalaEvmEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - AirdropClaimed(address indexed addr, uint256 roundId, uint256 amount)
         - handler: handleRoundSettled
-          kind: substrate/AcalaEvmEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
-              - RoundSettled(uint256 indexed roundId, address settleDestination, uint256 unclaimAmount);
+              - RoundSettled(uint256 indexed roundId, address settleDestination, uint256 unclaimAmount)
