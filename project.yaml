@@ -21,13 +21,11 @@ network:
     file: ./dist/chaintypes.js
 
 x-frontier: &frontier
-  kind: substrate/AcalaEvm
-  startBlock: 1748143
+  kind: substrate/FrontierEvm
+  startBlock: 2701125 
   processor: &frontier-processor
-    file: './dist/acalaEvm.js'
+    file: './dist/frontierEvm.js'
   assets:
-    eraManager:
-      file: ./node_modules/@subql/contract-sdk/artifacts/contracts/EraManager.sol/EraManager.json
     airdropper:
       file: ./node_modules/@subql/contract-sdk/artifacts/contracts/Airdropper.sol/Airdropper.json
 
@@ -37,27 +35,27 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: airdropper
-        address: '0x32Bd2f73286F6329B1Cf4D5Abf41608D829be867'
+        address: '0x29D6a14a9c1cEaf76a86C3dcda9e6AF067018e80'
     mapping:
       file: ./dist/index.js
       handlers:
         - handler: handleRoundCreated
-          kind: substrate/AcalaEvmEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - RoundCreated(uint256 indexed roundId, address tokenAddress, uint256 roundStartTime, uint256 roundDeadline)
         - handler: handleAddAirdrop
-          kind: substrate/AcalaEvmEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - AddAirdrop(address indexed addr, uint256 roundId, uint256 amount)
         - handler: handleAirdropClaimed
-          kind: substrate/AcalaEvmEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - AirdropClaimed(address indexed addr, uint256 roundId, uint256 amount)
         - handler: handleRoundSettled
-          kind: substrate/AcalaEvmEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
-              - RoundSettled(uint256 indexed roundId, address settleDestination, uint256 unclaimAmount);
+              - RoundSettled(uint256 indexed roundId, address settleDestination, uint256 unclaimAmount)
