@@ -33,6 +33,6 @@ type User @entity {
 }
 
 type Exception @entity {
-  id: ID! #Tx hash
+  id: ID! # getUpsertAt util
   error: String!
 }

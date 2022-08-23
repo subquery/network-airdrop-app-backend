@@ -9,7 +9,9 @@ export const getUpsertAt = (
   handler: string,
   event: FrontierEvmEvent
 ): string => {
-  const upsertAt = `${handler}:${event.blockNumber}:${event.transactionHash ?? 'N/A'}`;
+  const upsertAt = `${handler}:${event.blockNumber}:${
+    event.transactionHash ?? ''
+  }`;
   return upsertAt;
 };
 
@@ -18,11 +20,11 @@ export const getErrorText = (handler: string, error: string) => {
 };
 
 export const recordException = async (
-  txHash: string,
+  txInfo: string, // getUpsertAt
   error: string
 ): Promise<void> => {
   const exception = Exception.create({
-    id: txHash,
+    id: txInfo,
     error,
   });
 
@@ -52,7 +54,7 @@ export const upsertUser = async (
 
     await user.save();
   } else {
-    logger.info(`${HANDLER} - create: ${event.transactionHash ?? 'N/A'}`);
+    logger.info(`${HANDLER} - create: ${event.transactionHash ?? ''}`);
     const newAddress = new User(address);
     newAddress.totalAirdropAmount = toBigNumber(airdropAmount).toBigInt();
     newAddress.claimedAmount = toBigNumber(claimedAmount).toBigInt();
