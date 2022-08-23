@@ -26,8 +26,8 @@ type AirdropUser @entity {
 
 type User @entity {
   id: ID! # userAccount
-  totalAirdropAmount: BigInt # Claimed + unClaimed + unlocked + locked
-  claimedAmount: BigInt # claim total
+  totalAirdropAmount: BigInt! # Claimed + unClaimed + unlocked + locked
+  claimedAmount: BigInt! # claim total
   createAt: String #topicHandler:block:Txhash
   updateAt: String #topicHandler:block:Txhash
 }

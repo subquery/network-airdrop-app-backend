@@ -1,7 +1,7 @@
 // Copyright 2020-2022 SubQuery Pte Ltd authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { AcalaEvmEvent } from '@subql/acala-evm-processor';
+import { FrontierEvmEvent } from '@subql/frontier-evm-processor';
 import {
   RoundCreatedEvent,
   AddAirdropEvent,
@@ -21,7 +21,7 @@ const getAirdropUserId = (roundId: string, address: string) =>
   `${roundId}:${address}`;
 
 export async function handleRoundCreated(
-  event: AcalaEvmEvent<RoundCreatedEvent['args']>
+  event: FrontierEvmEvent<RoundCreatedEvent['args']>
 ): Promise<void> {
   const HANDLER = 'handleRoundCreated';
   logger.info(HANDLER);
@@ -41,7 +41,7 @@ export async function handleRoundCreated(
 }
 
 export async function handleRoundSettled(
-  event: AcalaEvmEvent<RoundSettledEvent['args']>
+  event: FrontierEvmEvent<RoundSettledEvent['args']>
 ): Promise<void> {
   const HANDLER = 'handleRoundSettled';
   logger.info(HANDLER);
@@ -60,13 +60,14 @@ export async function handleRoundSettled(
       HANDLER,
       `Expect roundId - ${roundIdString} exit`
     );
-    await recordException(event.transactionHash, error);
+  
+    await recordException(event.transactionHash ?? 'N/A', error);
     logger.error(error);
   }
 }
 
 export async function handleAddAirdrop(
-  event: AcalaEvmEvent<AddAirdropEvent['args']>
+  event: FrontierEvmEvent<AddAirdropEvent['args']>
 ): Promise<void> {
   const HANDLER = 'handleAddAirdrop';
   logger.info(HANDLER);
@@ -94,13 +95,13 @@ export async function handleAddAirdrop(
       HANDLER,
       `Expect roundId - ${roundIdString} exit`
     );
-    await recordException(event.transactionHash, error);
+    await recordException(event.transactionHash ?? 'N/A', error);
     logger.error(error);
   }
 }
 
 export async function handleAirdropClaimed(
-  event: AcalaEvmEvent<AirdropClaimedEvent['args']>
+  event: FrontierEvmEvent<AirdropClaimedEvent['args']>
 ): Promise<void> {
   const HANDLER = 'handleAirdropClaimed';
   logger.info(HANDLER);
@@ -117,7 +118,7 @@ export async function handleAirdropClaimed(
       HANDLER,
       `Expect roundId - ${roundIdString} exit`
     );
-    await recordException(event.transactionHash, error);
+    await recordException(event.transactionHash ?? 'N/A', error);
     logger.error(error);
     return;
   }
@@ -127,7 +128,7 @@ export async function handleAirdropClaimed(
       HANDLER,
       `Expect airdropUser - ${airdropUserId} exit`
     );
-    await recordException(event.transactionHash, error);
+    await recordException(event.transactionHash ?? 'N/A', error);
     logger.error(error);
     return;
   }

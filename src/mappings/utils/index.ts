@@ -1,15 +1,15 @@
 // Copyright 2020-2022 SubQuery Pte Ltd authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { AcalaEvmEvent } from '@subql/acala-evm-processor';
+import { FrontierEvmEvent } from '@subql/frontier-evm-processor';
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
 import { User, Exception } from '../../types';
 
 export const getUpsertAt = (
   handler: string,
-  event: AcalaEvmEvent<any>
+  event: FrontierEvmEvent
 ): string => {
-  const upsertAt = `${handler}:${event.blockNumber}:${event.transactionHash}`;
+  const upsertAt = `${handler}:${event.blockNumber}:${event?.transactionHash ?? 'N/A'}`;
   return upsertAt;
 };
 
@@ -36,7 +36,7 @@ export const upsertUser = async (
   address: string,
   airdropAmount: BigNumberish,
   claimedAmount: BigNumberish,
-  event: AcalaEvmEvent<any>
+  event: FrontierEvmEvent
 ) => {
   const HANDLER = 'upsertUser';
   const user = await User.get(address);
@@ -52,7 +52,7 @@ export const upsertUser = async (
 
     await user.save();
   } else {
-    logger.info(`${HANDLER} - create: ${event.transactionHash}`);
+    logger.info(`${HANDLER} - create: ${event.transactionHash ?? 'N/A'}`);
     const newAddress = new User(address);
     newAddress.totalAirdropAmount = toBigNumber(airdropAmount).toBigInt();
     newAddress.claimedAmount = toBigNumber(claimedAmount).toBigInt();
