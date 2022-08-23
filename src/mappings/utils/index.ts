@@ -9,7 +9,7 @@ export const getUpsertAt = (
   handler: string,
   event: FrontierEvmEvent
 ): string => {
-  const upsertAt = `${handler}:${event.blockNumber}:${event?.transactionHash ?? 'N/A'}`;
+  const upsertAt = `${handler}:${event.blockNumber}:${event.transactionHash ?? 'N/A'}`;
   return upsertAt;
 };
 
