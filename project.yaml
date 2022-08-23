@@ -37,7 +37,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: airdropper
-        address: '0x32Bd2f73286F6329B1Cf4D5Abf41608D829be867'
+        address: '0x29D6a14a9c1cEaf76a86C3dcda9e6AF067018e80'
     mapping:
       file: ./dist/index.js
       handlers:
