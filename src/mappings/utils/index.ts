@@ -1,13 +1,14 @@
 // Copyright 2020-2022 SubQuery Pte Ltd authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { FrontierEvmEvent } from '@subql/frontier-evm-processor';
+
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
+import { EthereumLog } from '@subql/types-ethereum';
 import { User, Exception } from '../../types';
 
 export const getUpsertAt = (
   handler: string,
-  event: FrontierEvmEvent
+  event: EthereumLog
 ): string => {
   const upsertAt = `${handler}:${event.blockNumber}:${
     event.transactionHash ?? ''
@@ -21,7 +22,7 @@ export const getErrorText = (handler: string, error: string) => {
 
 export const recordException = async (
   handler: string,
-  event: FrontierEvmEvent,
+  event: EthereumLog,
   error: string
 ): Promise<void> => {
   const exception = Exception.create({
@@ -39,8 +40,8 @@ export const upsertUser = async (
   address: string,
   airdropAmount: BigNumberish,
   claimedAmount: BigNumberish,
-  event: FrontierEvmEvent
-) => {
+  event: EthereumLog
+): Promise<void> => {
   const HANDLER = 'upsertUser';
   const user = await User.get(address);
 

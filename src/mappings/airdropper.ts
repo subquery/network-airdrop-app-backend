@@ -1,13 +1,13 @@
 // Copyright 2020-2022 SubQuery Pte Ltd authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { FrontierEvmEvent } from '@subql/frontier-evm-processor';
 import {
   RoundCreatedEvent,
   AddAirdropEvent,
   AirdropClaimedEvent,
   RoundSettledEvent,
 } from '@subql/contract-sdk/typechain/Airdropper';
+import { EthereumLog } from '@subql/types-ethereum';
 import assert from 'assert';
 import { Airdrop, AirdropClaimStatus, AirdropUser } from '../types';
 import { getUpsertAt, recordException, upsertUser } from './utils';
@@ -16,7 +16,7 @@ const getAirdropUserId = (roundId: string, address: string) =>
   `${roundId}:${address}`;
 
 export async function handleRoundCreated(
-  event: FrontierEvmEvent<RoundCreatedEvent['args']>
+  event: EthereumLog<RoundCreatedEvent['args']>
 ): Promise<void> {
   const HANDLER = 'handleRoundCreated';
   logger.info(HANDLER);
@@ -36,7 +36,7 @@ export async function handleRoundCreated(
 }
 
 export async function handleRoundSettled(
-  event: FrontierEvmEvent<RoundSettledEvent['args']>
+  event: EthereumLog<RoundSettledEvent['args']>
 ): Promise<void> {
   const HANDLER = 'handleRoundSettled';
   logger.info(HANDLER);
@@ -58,7 +58,7 @@ export async function handleRoundSettled(
 }
 
 export async function handleAddAirdrop(
-  event: FrontierEvmEvent<AddAirdropEvent['args']>
+  event: EthereumLog<AddAirdropEvent['args']>
 ): Promise<void> {
   const HANDLER = 'handleAddAirdrop';
   logger.info(HANDLER);
@@ -89,7 +89,7 @@ export async function handleAddAirdrop(
 }
 
 export async function handleAirdropClaimed(
-  event: FrontierEvmEvent<AirdropClaimedEvent['args']>
+  event: EthereumLog<AirdropClaimedEvent['args']>
 ): Promise<void> {
   const HANDLER = 'handleAirdropClaimed';
   logger.info(HANDLER);
