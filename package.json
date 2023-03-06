@@ -44,12 +44,12 @@
   },
   "dependencies": {
     "@ethersproject/abi": "^5.7.0",
-    "@subql/contract-sdk": "0.12.1-0",
+    "@subql/contract-sdk": "^0.12.3-0",
     "@subql/types-ethereum": "dev",
     "@types/pino": "^7.0.5",
     "@types/validator": "latest",
-    "ethers": "^5.7.2",
-    "bs58": "^4.0.1"
+    "bs58": "^4.0.1",
+    "ethers": "^5.7.2"
   },
   "resolutions": {
     "class-transformer": "0.4.0",

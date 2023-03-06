@@ -28,7 +28,7 @@ dataSources:
   - <<: *ethereum
     options:
       abi: airdropper
-      address: '0x29D6a14a9c1cEaf76a86C3dcda9e6AF067018e80'
+      address: '0x1317b05DF3c395D21F10AF364bf04Af1A28645Df'
     mapping:
       file: ./dist/index.js
       handlers:
