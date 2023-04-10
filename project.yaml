@@ -19,7 +19,7 @@ network:
 
 x-ethereum: &ethereum
   kind: ethereum/Runtime 
-  startBlock: 33168664
+  startBlock: 41192135
   assets:
     airdropper:
       file: ./node_modules/@subql/contract-sdk/artifacts/contracts/Airdropper.sol/Airdropper.json
@@ -28,7 +28,7 @@ dataSources:
   - <<: *ethereum
     options:
       abi: airdropper
-      address: '0xB64D73B96358855075576D66746D2a88e043CC1E'
+      address: '0x22Ab0be7a2eC82a983883839f7d5b4B12F5EbddC'
     mapping:
       file: ./dist/index.js
       handlers:
