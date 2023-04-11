@@ -13,9 +13,8 @@ repository: 'https://github.com/subquery/airdrop-subql-project.git'
 schema:
   file: ./schema.graphql
 network:
-  chainId: '80001' # Mumbai testnet 
-  endpoint: 'https://polygon-mumbai.g.alchemy.com/v2/olBcbaUN-00iYo-4VDlJYbkpCmj5rLY0'
-  dictionary: 'https://mumbai-dict-cr.api.onfinality.io'
+  chainId: '137' # Mumbai testnet 
+  endpoint: 'https://polygon.api.onfinality.io/rpc/public'
 
 x-ethereum: &ethereum
   kind: ethereum/Runtime 
