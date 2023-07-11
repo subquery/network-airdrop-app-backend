@@ -15,12 +15,12 @@ repository: 'https://github.com/subquery/airdrop-subql-project.git'
 schema:
   file: ./schema.graphql
 network:
-  chainId: '137' # Mumbai testnet 
-  endpoint: 'https://polygon.api.onfinality.io/rpc/public'
+  chainId: '80001' # Mumbai testnet 
+  endpoint: 'https://polygon-mumbai.g.alchemy.com/v2/olBcbaUN-00iYo-4VDlJYbkpCmj5rLY0'
 
 x-ethereum: &ethereum
   kind: ethereum/Runtime 
-  startBlock: 41192135
+  startBlock: 37528625
   assets:
     airdropper:
       file: ./node_modules/@subql/contract-sdk/artifacts/contracts/Airdropper.sol/Airdropper.json
@@ -29,7 +29,7 @@ dataSources:
   - <<: *ethereum
     options:
       abi: airdropper
-      address: '0x22Ab0be7a2eC82a983883839f7d5b4B12F5EbddC'
+      address: '0xdE4c8a50A8AFC4BcB9250Df8f4d61C8eBF98F535'
     mapping:
       file: ./dist/index.js
       handlers:
