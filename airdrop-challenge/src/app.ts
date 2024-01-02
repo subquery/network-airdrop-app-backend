@@ -7,7 +7,7 @@ import * as middlewares from "./middlewares";
 import userAPI from "./api/user-api";
 import MessageResponse from "./interfaces/MessageResponse";
 import { User } from "./models/service/user";
-import { UserSignup } from "./models/service/user-signup";
+import { UserSignupRequest } from "./models/service/user-signup-request";
 
 require("dotenv").config();
 
@@ -26,7 +26,7 @@ app.get<{}, MessageResponse>("/", (req, res) => {
 
 app.post<{}, User>("/signup", (req, res) => {
   console.log("Got signup request");
-  const signup = req.body as UserSignup;
+  const signup = req.body as UserSignupRequest;
   //assert();
   res.sendStatus(201);
 });
