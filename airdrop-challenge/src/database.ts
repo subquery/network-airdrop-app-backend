@@ -93,16 +93,20 @@ export async function verifyUserEmail(verify_email_code: string) {
 }
 
 export async function getUser(id: string): Promise<UserResponse> {
-  const userTable: User = await db
-    .selectFrom("users")
-    .selectAll()
-    .where("id", "=", id)
-    .executeTakeFirstOrThrow();
+  const [userTable, rank] = await Promise.all([
+    db
+      .selectFrom("users")
+      .selectAll()
+      .where("id", "=", id)
+      .executeTakeFirstOrThrow(),
+    getCurrentUserRank(id),
+  ]);
+
   return {
     ...userTable,
     address: userTable.id,
     total_score: userTable.raw_score * (userTable.referral_count + 1),
-    rank: 0, // TODO
+    rank,
   } as UserResponse;
 }
 
@@ -173,6 +177,21 @@ export async function getUserChallegesForQuery(
       } as UserChallengeResponse;
     })
   );
+}
+
+async function getCurrentUserRank(userID: string): Promise<number> {
+  const allUsers = await db
+    .selectFrom("users")
+    .select(["id", "raw_score", "referral_count"])
+    .execute();
+  const sortedUsersWithScore = allUsers
+    .map((u) => ({
+      ...u,
+      total_score: u.raw_score * (u.referral_count + 1),
+    }))
+    .sort((a, b) => (a.total_score > b.total_score ? -1 : 1));
+
+  return sortedUsersWithScore.findIndex((u) => u.id === userID);
 }
 
 async function initNewUserChallenge(
