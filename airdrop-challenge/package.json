@@ -24,7 +24,8 @@
     "express": "^4.18.2",
     "helmet": "^7.1.0",
     "kysely": "^0.27.0",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
@@ -32,6 +33,7 @@
     "@types/jest": "^29.5.10",
     "@types/morgan": "^1.9.9",
     "@types/node": "^20.10.0",
+    "@types/pg": "^8.10.9",
     "@types/supertest": "^2.0.16",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
     "@typescript-eslint/parser": "^6.13.1",

@@ -6,9 +6,8 @@ import {
   User,
   UserChallenge,
   UserUpdate,
-} from "./models/database";
+} from "./models/database-models";
 import { UserSignupRequest } from "./models/service/user-signup-request";
-
 import { Pool } from "pg";
 import { Kysely, PostgresDialect } from "kysely";
 import { UserResponse } from "./models/service/user-response";
@@ -18,21 +17,20 @@ import {
   LeaderboardSummaryResponse,
 } from "./models/service/leaderboard_summary-response";
 
-const dialect = new PostgresDialect({
-  pool: new Pool({
-    database: "test",
-    host: "localhost",
-    user: "admin",
-    port: 5434,
-    max: 10,
-  }),
-});
-
 // Database interface is passed to Kysely's constructor, and from now on, Kysely
 // knows your database structure.
 // Dialect is passed to Kysely's constructor, and from now on, Kysely knows how
 // to communicate with your database.
-export const db = new Kysely<Database>({
+const dialect = new PostgresDialect({
+  pool: new Pool({
+    database: process.env.DB_NAME || "test",
+    host: process.env.DB_HOST || "localhost",
+    user: process.env.DB_USER || "admin",
+    port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5434,
+    max: process.env.DB_POOL_LIMIT ? parseInt(process.env.DB_POOL_LIMIT) : 10,
+  }),
+});
+const db = new Kysely<Database>({
   dialect,
 });
 

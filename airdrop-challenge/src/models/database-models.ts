@@ -1,11 +1,4 @@
-import {
-  ColumnType,
-  Generated,
-  Insertable,
-  JSONColumnType,
-  Selectable,
-  Updateable,
-} from "kysely";
+import { Generated, Insertable, Selectable, Updateable } from "kysely";
 
 export interface Database {
   users: UsersTable;
@@ -27,9 +20,9 @@ export interface UsersTable {
 export interface ChallengesTable {
   id: Generated<number>;
   name: string;
-  success: boolean;
   reward: number;
   reward_type: "FIXED" | "MULTIPLE";
+  multiple_denominator: string;
   description: string;
   cta: string;
   cta_label: string;
