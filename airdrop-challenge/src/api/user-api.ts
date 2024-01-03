@@ -9,19 +9,25 @@ const router = express.Router();
 
 router.get<{}, UserResponse>("/:id", async (req, res) => {
   assert("id" in req.params, "ID missing from URL");
-  res.json(await getUser(req.params.id as string));
+  const userID = req.params.id as string;
+  console.log(`Got user request for user ${userID}`);
+  res.json(await getUser(userID));
 });
 
 router.get<{}, UserChallengeResponse[]>("/:id/challenges", async (req, res) => {
   assert("id" in req.params, "ID missing from URL");
-  res.json(await getUserChallegesForQuery(req.params.id as string));
+  const userID = req.params.id as string;
+  console.log(`Got challenges request for user ${userID}`);
+  res.json(await getUserChallegesForQuery(userID));
 });
 
 router.get<{}, LeaderboardSummaryResponse>(
   "/:id/leaderboard",
   async (req, res) => {
     assert("id" in req.params, "ID missing from URL");
-    res.json(await getLeaderboard(req.params.id as string));
+    const userID = req.params.id as string;
+    console.log(`Got leaderboard request for user ${userID}`);
+    res.json(await getLeaderboard(userID));
   }
 );
 
