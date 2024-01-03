@@ -1,9 +1,9 @@
-export interface LeaderboardSummary {
+export interface LeaderboardSummaryResponse {
   total_participants: number;
-  summary: LeaderboardRecord[];
+  summary: LeaderboardRecordResponse[];
 }
 
-export interface LeaderboardRecord {
+export interface LeaderboardRecordResponse {
   rank: number;
   name: string;
   raw_score: number;
