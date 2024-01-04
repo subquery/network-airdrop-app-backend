@@ -56,4 +56,5 @@ export async function checkRewardRecord() {
       console.error(`Error checking reward record for ${user.id}: ${e}`);
     }
   }
+  console.log(`Done checking reward record`);
 }

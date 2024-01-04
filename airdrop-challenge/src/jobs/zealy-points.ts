@@ -51,6 +51,7 @@ export async function checkZealyPoints() {
       console.error(`Error checking zealy points for ${user.id}: ${e}`);
     }
   }
+  console.log(`Done checking zealy points`);
 }
 
 type ZealyUser = {

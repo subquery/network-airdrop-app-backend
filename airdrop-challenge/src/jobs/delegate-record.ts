@@ -56,4 +56,5 @@ export async function checkDelegateRecord() {
       console.error(`Error checking delegate record for ${user.id}: ${e}`);
     }
   }
+  console.log(`Done checking delegate record`);
 }

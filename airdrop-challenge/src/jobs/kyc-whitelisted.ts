@@ -31,4 +31,5 @@ export async function checkKYCStatus() {
       console.error(`Error checking KYC status for ${user.id}: ${e}`);
     }
   }
+  console.log(`Done checking KYC status`);
 }
