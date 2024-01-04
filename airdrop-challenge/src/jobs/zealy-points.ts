@@ -28,7 +28,8 @@ export async function checkZealyPoints() {
           "x-api-key": process.env.ZEALY_API_KEY || "",
         },
         params: {
-          ethAddress: user.id,
+          email: user.email,
+          // ethAddress: user.id,
         },
       });
       const zealyUser: ZealyUser = result.data;

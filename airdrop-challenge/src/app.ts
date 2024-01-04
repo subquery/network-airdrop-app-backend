@@ -11,8 +11,6 @@ import { UserSignupRequest } from "./models/service/user-signup-request";
 import { createNewUser, getReferringUserID, verifyUserEmail } from "./database";
 import assert from "assert";
 
-require("dotenv").config();
-
 const app = express();
 
 app.use(morgan("dev"));
