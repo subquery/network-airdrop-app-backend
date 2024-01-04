@@ -32,6 +32,7 @@ const dialect = new PostgresDialect({
 });
 const db = new Kysely<Database>({
   dialect,
+  log: ["query"],
 });
 
 export async function createNewUser(
@@ -41,7 +42,7 @@ export async function createNewUser(
   const newUser: NewUser = {
     ...signup,
     verified_email: false,
-    raw_score: referring_user_id ? 400 : 200,
+    raw_score: 200,
     referral_count: referring_user_id ? 1 : 0,
     referral_code: Array.from(Array(8), () =>
       Math.floor(Math.random() * 36).toString(36)
@@ -220,4 +221,58 @@ async function getUserChallenges(userID: string): Promise<UserChallenge[]> {
     .selectAll()
     .where("user_id", "=", userID)
     .execute();
+}
+
+export async function getUsersWithoutChallengeAchieved(challengeId: number) {
+  return await db
+    .selectFrom("users")
+    .selectAll("users")
+    .where(({ or, not, exists, selectFrom }) =>
+      or([
+        not(
+          exists(
+            selectFrom("user_challenges").whereRef("user_id", "=", "users.id")
+          )
+        ),
+        exists(
+          selectFrom("challenges")
+            .where("id", "=", challengeId)
+            .where(({ selectFrom, exists }) =>
+              exists(
+                selectFrom("user_challenges")
+                  .whereRef("user_id", "=", "users.id")
+                  .whereRef("challenge_id", "=", "challenges.id")
+                  .where("achieved", "is", null)
+              )
+            )
+        ),
+      ])
+    )
+    .execute();
+}
+
+export async function updateUserChallenge(
+  user_id: string,
+  challenge_id: number,
+  achieved: Date
+) {
+  await db
+    .updateTable("user_challenges")
+    .set({
+      user_id,
+      challenge_id,
+      achieved,
+    })
+    .where("user_id", "=", user_id)
+    .where("challenge_id", "=", challenge_id)
+    .execute();
+}
+
+export async function getChallengeId(challengeName: string) {
+  const { id } = await db
+    .selectFrom("challenges")
+    .select("id")
+    .where("name", "=", challengeName)
+    .executeTakeFirstOrThrow();
+  return id;
 }

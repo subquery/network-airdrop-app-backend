@@ -6,15 +6,17 @@ CREATE TABLE users (
     raw_score INT NOT NULL,
     referral_code VARCHAR(50) NOT NULL,
     referral_count INT NOT NULL,
-    referring_user_id VARCHAR(255)
-    FOREIGN KEY (referring_user_id) REFERENCES Users(id),
+    referring_user_id VARCHAR(255),
+    FOREIGN KEY (referring_user_id) REFERENCES users(id)
 );
 
+CREATE TYPE reward_type AS ENUM ('FIXED', 'MULTIPLE');
+
 CREATE TABLE challenges (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(512) NOT NULL,
     reward INT NOT NULL,
-    reward_type ENUM('FIXED', 'MULTIPLE') NOT NULL,
+    reward_type reward_type NOT NULL,
     multiple_denominator VARCHAR(256) NOT NULL,
     description TEXT,
     cta VARCHAR(512) NOT NULL,
@@ -22,15 +24,15 @@ CREATE TABLE challenges (
 );
 
 CREATE TABLE user_challenges (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    id SERIAL PRIMARY KEY,
     user_id VARCHAR(255) NOT NULL,
     challenge_id INT NOT NULL,
-    achieved DATETIME,
-    FOREIGN KEY (user_id) REFERENCES Users(id),
-    FOREIGN KEY (challenge_id) REFERENCES Challenges(id)
+    achieved TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (challenge_id) REFERENCES challenges(id)
 );
 
-INSERT INTO Challenges (name, reward, reward_type, multiple_denominator, description, cta, cta_label) VALUES 
+INSERT INTO challenges (name, reward, reward_type, multiple_denominator, description, cta, cta_label) VALUES 
 ('Reach Level 2 on Zealy', 400, 'FIXED', '', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
 ('Reach Level 4 on Zealy', 700, 'FIXED', '', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
 ('Get Whitelisted for SQT Token Launch', 2000, 'FIXED', '', 'Description', 'https://subquery.foundation/sale', 'Start Whitelisting'),
