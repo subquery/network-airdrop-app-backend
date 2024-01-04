@@ -35,9 +35,22 @@ app.post<{}, UserResponse>("/signup", async (req, res) => {
     referring_user_id = await getReferringUserID(referral_code);
   }
   await createNewUser(signup, referring_user_id);
+
+  // Signup user in SendGrid marketing
+  await fetch("https://signup.subquery.network/subscribe", {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: signup.email,
+    }),
+  });
+
   res.sendStatus(201);
 });
 
+// We don't need this
 app.post("/verify_email/:code", async (req, res) => {
   assert("code" in req.params, "Code missing from URL");
   const verify_email_code = req.params.code as string;
