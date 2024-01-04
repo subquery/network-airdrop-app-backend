@@ -32,6 +32,8 @@ CREATE TABLE user_challenges (
     FOREIGN KEY (challenge_id) REFERENCES challenges(id)
 );
 
+ALTER TABLE public.user_challenges ADD amount bigint NOT NULL DEFAULT 0;
+
 INSERT INTO challenges (name, reward, reward_type, multiple_denominator, description, cta, cta_label) VALUES 
 ('Reach Level 2 on Zealy', 400, 'FIXED', '', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
 ('Reach Level 4 on Zealy', 700, 'FIXED', '', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),

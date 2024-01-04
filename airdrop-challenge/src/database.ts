@@ -154,7 +154,7 @@ export async function getLeaderboard(
   } as LeaderboardSummaryResponse;
 }
 
-export async function getUserChallegesForQuery(
+export async function getUserChallengesForQuery(
   userID: string
 ): Promise<UserChallengeResponse[]> {
   const [challenges, userChallenges] = await Promise.all([
@@ -164,16 +164,16 @@ export async function getUserChallegesForQuery(
 
   return await Promise.all(
     challenges.map(async (c) => {
-      let userChallege = userChallenges.find((uc) => uc.challenge_id === c.id);
-      if (!userChallege) {
-        userChallege = await initNewUserChallenge(userID, c.id);
+      let userChallenge = userChallenges.find((uc) => uc.challenge_id === c.id);
+      if (!userChallenge) {
+        userChallenge = await initNewUserChallenge(userID, c.id);
       }
 
       return {
         ...c,
-        success: !!userChallege.achieved,
-        success_date: !!userChallege.achieved
-          ? userChallege.achieved
+        success: !!userChallenge.achieved,
+        success_date: !!userChallenge.achieved
+          ? userChallenge.achieved
           : undefined,
       } as UserChallengeResponse;
     })
@@ -195,7 +195,7 @@ async function getCurrentUserRank(userID: string): Promise<number> {
   return sortedUsersWithScore.findIndex((u) => u.id === userID);
 }
 
-async function initNewUserChallenge(
+export async function initNewUserChallenge(
   user_id: string,
   challenge_id: number
 ): Promise<UserChallenge> {
@@ -203,6 +203,7 @@ async function initNewUserChallenge(
     user_id,
     challenge_id,
     achieved: undefined,
+    amount: BigInt(0),
   };
   return await db
     .insertInto("user_challenges")
@@ -221,6 +222,22 @@ async function getUserChallenges(userID: string): Promise<UserChallenge[]> {
     .selectAll()
     .where("user_id", "=", userID)
     .execute();
+}
+
+export async function getUserChallenge(
+  userID: string,
+  challengeID: number
+): Promise<UserChallenge> {
+  const userChallenge = await db
+    .selectFrom("user_challenges")
+    .selectAll()
+    .where("user_id", "=", userID)
+    .where("challenge_id", "=", challengeID)
+    .executeTakeFirst();
+  if (userChallenge) {
+    return userChallenge;
+  }
+  return await initNewUserChallenge(userID, challengeID);
 }
 
 export async function getUsersWithoutChallengeAchieved(challengeId: number) {
@@ -254,14 +271,14 @@ export async function getUsersWithoutChallengeAchieved(challengeId: number) {
 export async function updateUserChallenge(
   user_id: string,
   challenge_id: number,
-  achieved: Date
+  achieved: Date,
+  amount: bigint
 ) {
   await db
     .updateTable("user_challenges")
     .set({
-      user_id,
-      challenge_id,
       achieved,
+      amount,
     })
     .where("user_id", "=", user_id)
     .where("challenge_id", "=", challenge_id)
