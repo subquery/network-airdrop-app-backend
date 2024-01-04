@@ -247,12 +247,14 @@ export async function getUsers() {
 export async function getUsersWithoutChallengeAchieved(challengeId: number) {
   return await db
     .selectFrom("users")
-    .selectAll("users")
+    .selectAll()
     .where(({ or, not, exists, selectFrom }) =>
       or([
         not(
           exists(
-            selectFrom("user_challenges").whereRef("user_id", "=", "users.id")
+            selectFrom("user_challenges")
+              .whereRef("user_id", "=", "users.id")
+              .where("challenge_id", "=", challengeId)
           )
         ),
         exists(
