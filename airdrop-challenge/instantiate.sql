@@ -24,15 +24,15 @@ CREATE TABLE challenges (
 );
 
 CREATE TABLE user_challenges (
-    id SERIAL PRIMARY KEY,
-    user_id VARCHAR(255) NOT NULL,
-    challenge_id INT NOT NULL,
-    achieved TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (challenge_id) REFERENCES challenges(id)
+	id serial4 NOT NULL,
+	user_id varchar(255) NOT NULL,
+	challenge_id int4 NOT NULL,
+	achieved timestamp NULL,
+	amount numeric NOT NULL DEFAULT 0,
+	CONSTRAINT user_challenges_pkey PRIMARY KEY (id),
+	CONSTRAINT user_challenges_challenge_id_fkey FOREIGN KEY (challenge_id) REFERENCES public.challenges(id),
+	CONSTRAINT user_challenges_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
 );
-
-ALTER TABLE public.user_challenges ADD amount bigint NOT NULL DEFAULT 0;
 
 INSERT INTO challenges (name, reward, reward_type, multiple_denominator, description, cta, cta_label) VALUES 
 ('Reach Level 2 on Zealy', 400, 'FIXED', '', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),

@@ -1,10 +1,11 @@
 import { CronJob } from "cron";
 import { checkKYCStatus } from "./kyc-whitelisted";
 import { checkDelegateRecord } from "./delegate-record";
+import { checkRewardRecord } from "./reward-record";
 
 let minute = 0;
 
-function increaseMinute() {
+function nextMinute() {
   minute += 5;
   if (minute >= 60) {
     minute = minute % 60;
@@ -13,7 +14,7 @@ function increaseMinute() {
 }
 
 CronJob.from({
-  cronTime: `0 ${increaseMinute()} * * * *`,
+  cronTime: `0 ${nextMinute()} * * * *`,
   onTick: checkKYCStatus,
   timeZone: "UTC",
   start: true,
@@ -21,9 +22,17 @@ CronJob.from({
 });
 
 CronJob.from({
-  cronTime: `0 ${increaseMinute()} * * * *`,
+  cronTime: `0 ${nextMinute()} * * * *`,
   onTick: checkDelegateRecord,
   timeZone: "UTC",
   start: true,
   runOnInit: false,
+});
+
+CronJob.from({
+  cronTime: `0 ${nextMinute()} * * * *`,
+  onTick: checkRewardRecord,
+  timeZone: "UTC",
+  start: true,
+  runOnInit: true,
 });

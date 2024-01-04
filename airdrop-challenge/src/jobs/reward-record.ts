@@ -6,16 +6,16 @@ import {
 } from "../database";
 import { querySubqueryList } from "../utils/query";
 
-export async function checkDelegateRecord() {
+export async function checkRewardRecord() {
   let challengeId: number;
   try {
-    challengeId = await getChallengeId("Delegate on Kepler");
+    challengeId = await getChallengeId("Claim Rewards on Kepler");
   } catch (e) {
     console.error(`Challenge not found: ${e}`);
     return;
   }
   const users = await getUsers();
-  console.log(`Checking delegate record for ${users.length} users`);
+  console.log(`Checking reward record for ${users.length} users`);
   for (let user of users) {
     try {
       const result = await querySubqueryList({
@@ -27,8 +27,8 @@ export async function checkDelegateRecord() {
         },
         query: `
           query ($address: String, $offset: Int) {
-            delegations(
-              filter: {delegatorId: {equalTo: $address}}, 
+            rewards(
+              filter: { delegatorId: {equalTo: $address}},
               offset: $offset
             ) {
               totalCount
@@ -38,15 +38,15 @@ export async function checkDelegateRecord() {
             }
           }
         `,
-        type: "delegations",
+        type: "rewards",
         list: [],
       });
       if (result.length === 0) {
         continue;
       }
       let amount = 0;
-      for (let delegation of result) {
-        amount += delegation.amount.value.value / Math.pow(10, 18);
+      for (let reward of result) {
+        amount += reward.amount / Math.pow(10, 18);
       }
       const userChallenge = await getUserChallenge(user.id, challengeId);
       // @ts-ignore
@@ -54,7 +54,7 @@ export async function checkDelegateRecord() {
         await updateUserChallenge(user.id, challengeId, new Date(), amount);
       }
     } catch (e) {
-      console.error(`Error checking delegate record for ${user.id}: ${e}`);
+      console.error(`Error checking reward record for ${user.id}: ${e}`);
     }
   }
 }

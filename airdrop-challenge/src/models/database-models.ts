@@ -33,7 +33,7 @@ export interface UserChallengesTable {
   user_id: string;
   challenge_id: number;
   achieved: Date | undefined;
-  amount: BigInt;
+  amount: number;
 }
 
 // You should not use the table schema interfaces directly. Instead, you should

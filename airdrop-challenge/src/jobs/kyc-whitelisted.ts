@@ -25,7 +25,7 @@ export async function checkKYCStatus() {
       });
       if (result.data.status === true) {
         await getUserChallenge(user.id, challengeId);
-        await updateUserChallenge(user.id, challengeId, new Date(), 0n);
+        await updateUserChallenge(user.id, challengeId, new Date(), 0);
       }
     } catch (e) {
       console.error(`Error checking KYC status for ${user.id}: ${e}`);

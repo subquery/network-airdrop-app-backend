@@ -203,7 +203,7 @@ export async function initNewUserChallenge(
     user_id,
     challenge_id,
     achieved: undefined,
-    amount: BigInt(0),
+    amount: 0,
   };
   return await db
     .insertInto("user_challenges")
@@ -240,6 +240,10 @@ export async function getUserChallenge(
   return await initNewUserChallenge(userID, challengeID);
 }
 
+export async function getUsers() {
+  return await db.selectFrom("users").selectAll().execute();
+}
+
 export async function getUsersWithoutChallengeAchieved(challengeId: number) {
   return await db
     .selectFrom("users")
@@ -272,7 +276,7 @@ export async function updateUserChallenge(
   user_id: string,
   challenge_id: number,
   achieved: Date,
-  amount: bigint
+  amount: number
 ) {
   await db
     .updateTable("user_challenges")
