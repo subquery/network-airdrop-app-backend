@@ -34,5 +34,5 @@ CronJob.from({
   onTick: checkRewardRecord,
   timeZone: "UTC",
   start: true,
-  runOnInit: true,
+  runOnInit: false,
 });

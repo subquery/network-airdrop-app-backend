@@ -49,7 +49,6 @@ export async function checkDelegateRecord() {
         amount += delegation.amount.value.value / Math.pow(10, 18);
       }
       const userChallenge = await getUserChallenge(user.id, challengeId);
-      // @ts-ignore
       if (userChallenge.amount < amount) {
         await updateUserChallenge(user.id, challengeId, new Date(), amount);
       }
