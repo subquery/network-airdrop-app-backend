@@ -26,6 +26,7 @@ const dialect = new PostgresDialect({
     database: process.env.DB_NAME || "test",
     host: process.env.DB_HOST || "localhost",
     user: process.env.DB_USER || "admin",
+    password: process.env.DB_PASS || undefined,
     port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5434,
     max: process.env.DB_POOL_LIMIT ? parseInt(process.env.DB_POOL_LIMIT) : 10,
   }),
