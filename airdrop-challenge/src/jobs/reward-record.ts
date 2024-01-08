@@ -1,17 +1,35 @@
 import {
-  getChallengeId,
+  getChallenge,
   getUserChallenge,
   getUsers,
   updateUserChallenge,
 } from "../database";
+import { Challenge } from "../models/database-models";
 import { querySubqueryList } from "../utils/query";
 
+const challenges: { [key: string]: Challenge | undefined } = {
+  "reward-1": undefined,
+  "reward-2": undefined,
+};
+
+async function initChallengeIds() {
+  if (challenges["reward-2"] !== undefined) {
+    return;
+  }
+  for (let tag in challenges) {
+    challenges[tag] = await getChallenge(tag);
+  }
+}
+
 export async function checkRewardRecord() {
-  let challengeId: number;
   try {
-    challengeId = await getChallengeId("Claim Rewards on Kepler");
+    await initChallengeIds();
   } catch (e) {
     console.error(`Challenge not found: ${e}`);
+    return;
+  }
+  if (!challenges["reward-2"]) {
+    console.error(`Challenge not found`);
     return;
   }
   const users = await getUsers();
@@ -48,9 +66,19 @@ export async function checkRewardRecord() {
       for (let reward of result) {
         amount += reward.amount / Math.pow(10, 18);
       }
-      const userChallenge = await getUserChallenge(user.id, challengeId);
-      if (userChallenge.amount < amount) {
-        await updateUserChallenge(user.id, challengeId, new Date(), amount);
+      for (let challenge of Object.values(challenges)) {
+        if (!challenge) {
+          continue;
+        }
+        if (amount > challenge.fixed_amount) {
+          await getUserChallenge(user.id, challenge.id);
+          await updateUserChallenge(
+            user.id,
+            challenge.id,
+            new Date(),
+            challenge.reward
+          );
+        }
       }
     } catch (e) {
       console.error(`Error checking reward record for ${user.id}: ${e}`);

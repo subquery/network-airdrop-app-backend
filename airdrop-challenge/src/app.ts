@@ -8,7 +8,12 @@ import userAPI from "./api/user-api";
 import MessageResponse from "./interfaces/MessageResponse";
 import { UserResponse } from "./models/service/user-response";
 import { UserSignupRequest } from "./models/service/user-signup-request";
-import { createNewUser, getReferringUserID, verifyUserEmail } from "./database";
+import {
+  createNewUser,
+  getReferringUserID,
+  getUserByEmail,
+  verifyUserEmail,
+} from "./database";
 import assert from "assert";
 
 const app = express();
@@ -24,33 +29,47 @@ app.get<{}, MessageResponse>("/", (req, res) => {
   });
 });
 
-app.post<{}, UserResponse>("/signup", async (req, res, next) => {
-  try {
-    console.log("Got signup request");
-    const signup = req.body as UserSignupRequest;
-    const referral_code = signup.referral_code;
-    let referring_user_id: string | undefined = undefined;
-    if (referral_code) {
-      referring_user_id = await getReferringUserID(referral_code);
+app.post<{}, UserResponse | MessageResponse>(
+  "/signup",
+  async (req, res, next) => {
+    try {
+      console.log("Got signup request");
+      const signup = req.body as UserSignupRequest;
+
+      const { email } = signup;
+      const userByEmail = await getUserByEmail(email);
+      if (userByEmail) {
+        res.statusCode = 400;
+        res.json({
+          message: "Email already exists",
+        });
+        return;
+      }
+
+      const referral_code = signup.referral_code;
+      let referring_user_id: string | undefined = undefined;
+      if (referral_code) {
+        referring_user_id = await getReferringUserID(referral_code);
+      }
+      await createNewUser(signup, referring_user_id);
+
+      // Signup user in SendGrid marketing
+      await fetch("https://signup.subquery.network/subscribe", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: signup.email,
+        }),
+      });
+
+      res.sendStatus(201);
+    } catch (e) {
+      next(e);
     }
-    await createNewUser(signup, referring_user_id);
-
-    // Signup user in SendGrid marketing
-    // await fetch("https://signup.subquery.network/subscribe", {
-    //   method: "post",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     email: signup.email,
-    //   }),
-    // });
-
-    res.sendStatus(201);
-  } catch (e) {
-    next(e);
   }
-});
+);
 
 // We don't need this
 app.post("/verify_email/:code", async (req, res) => {

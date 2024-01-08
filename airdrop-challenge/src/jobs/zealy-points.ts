@@ -1,22 +1,45 @@
 import axios from "axios";
 import {
-  getChallengeId,
+  getChallenge,
   getUserChallenge,
   getUsersWithoutChallengeAchieved,
   updateUserChallenge,
 } from "../database";
+import { Challenge } from "../models/database-models";
+
+const challenges: { [key: string]: Challenge | undefined } = {
+  "zealy-1": undefined,
+  "zealy-2": undefined,
+  "zealy-3": undefined,
+  "zealy-4": undefined,
+  "zealy-5": undefined,
+  "zealy-6": undefined,
+  "zealy-7": undefined,
+};
+
+async function initChallengeIds() {
+  if (challenges["zealy-7"] !== undefined) {
+    return;
+  }
+  for (let tag in challenges) {
+    challenges[tag] = await getChallenge(tag);
+  }
+}
 
 export async function checkZealyPoints() {
-  let challengeIdLevel2: number;
-  let challengeIdLevel4: number;
   try {
-    challengeIdLevel2 = await getChallengeId("Reach Level 2 on Zealy");
-    challengeIdLevel4 = await getChallengeId("Reach Level 4 on Zealy");
+    await initChallengeIds();
   } catch (e) {
     console.error(`Challenge not found: ${e}`);
     return;
   }
-  const users = await getUsersWithoutChallengeAchieved(challengeIdLevel4);
+  if (!challenges["zealy-7"]) {
+    console.error(`Challenge not found`);
+    return;
+  }
+  const users = await getUsersWithoutChallengeAchieved(
+    challenges["zealy-7"].id
+  );
   console.log(`Checking zealy points for ${users.length} users`);
   for (let user of users) {
     try {
@@ -33,19 +56,19 @@ export async function checkZealyPoints() {
         },
       });
       const zealyUser: ZealyUser = result.data;
-      const challengeLevel2 = await getUserChallenge(
-        user.id,
-        challengeIdLevel2
-      );
-      const challengeLevel4 = await getUserChallenge(
-        user.id,
-        challengeIdLevel4
-      );
-      if (zealyUser.level >= 2 && !challengeLevel2.achieved) {
-        await updateUserChallenge(user.id, challengeIdLevel2, new Date(), 0);
-      }
-      if (zealyUser.level >= 4 && !challengeLevel4.achieved) {
-        await updateUserChallenge(user.id, challengeIdLevel4, new Date(), 0);
+      for (let challenge of Object.values(challenges)) {
+        if (!challenge) {
+          continue;
+        }
+        if (zealyUser.xp > challenge.fixed_amount) {
+          await getUserChallenge(user.id, challenge.id);
+          await updateUserChallenge(
+            user.id,
+            challenge.id,
+            new Date(),
+            challenge.reward
+          );
+        }
       }
     } catch (e) {
       console.error(`Error checking zealy points for ${user.id}: ${e}`);

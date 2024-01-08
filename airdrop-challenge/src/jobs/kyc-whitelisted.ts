@@ -1,20 +1,21 @@
 import axios from "axios";
 import {
-  getChallengeId,
+  getChallenge,
   getUserChallenge,
   getUsersWithoutChallengeAchieved,
   updateUserChallenge,
 } from "../database";
+import { Challenge } from "../models/database-models";
 
 export async function checkKYCStatus() {
-  let challengeId: number;
+  let challenge: Challenge;
   try {
-    challengeId = await getChallengeId("Get Whitelisted for SQT Token Launch");
+    challenge = await getChallenge("whitelist-1");
   } catch (e) {
     console.error(`Challenge not found: ${e}`);
     return;
   }
-  const users = await getUsersWithoutChallengeAchieved(challengeId);
+  const users = await getUsersWithoutChallengeAchieved(challenge.id);
   console.log(`Checking KYC status for ${users.length} users`);
   for (let user of users) {
     try {
@@ -24,8 +25,13 @@ export async function checkKYCStatus() {
         timeout: 10000,
       });
       if (result.data.status === true) {
-        await getUserChallenge(user.id, challengeId);
-        await updateUserChallenge(user.id, challengeId, new Date(), 0);
+        await getUserChallenge(user.id, challenge.id);
+        await updateUserChallenge(
+          user.id,
+          challenge.id,
+          new Date(),
+          challenge.reward
+        );
       }
     } catch (e) {
       console.error(`Error checking KYC status for ${user.id}: ${e}`);

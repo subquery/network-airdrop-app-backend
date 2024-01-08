@@ -1,20 +1,42 @@
 import {
-  getChallengeId,
+  getChallenge,
   getUserChallenge,
-  getUsers,
+  getUsersWithoutChallengeAchieved,
   updateUserChallenge,
 } from "../database";
+import { Challenge } from "../models/database-models";
 import { querySubqueryList } from "../utils/query";
 
+const challenges: { [key: string]: Challenge | undefined } = {
+  "delegate-1": undefined,
+  "delegate-2": undefined,
+  "delegate-3": undefined,
+  "delegate-4": undefined,
+};
+
+async function initChallengeIds() {
+  if (challenges["delegate-4"] !== undefined) {
+    return;
+  }
+  for (let tag in challenges) {
+    challenges[tag] = await getChallenge(tag);
+  }
+}
+
 export async function checkDelegateRecord() {
-  let challengeId: number;
   try {
-    challengeId = await getChallengeId("Delegate on Kepler");
+    await initChallengeIds();
   } catch (e) {
     console.error(`Challenge not found: ${e}`);
     return;
   }
-  const users = await getUsers();
+  if (!challenges["delegate-4"]) {
+    console.error(`Challenge not found`);
+    return;
+  }
+  const users = await getUsersWithoutChallengeAchieved(
+    challenges["delegate-4"].id
+  );
   console.log(`Checking delegate record for ${users.length} users`);
   for (let user of users) {
     try {
@@ -48,9 +70,19 @@ export async function checkDelegateRecord() {
       for (let delegation of result) {
         amount += delegation.amount.value.value / Math.pow(10, 18);
       }
-      const userChallenge = await getUserChallenge(user.id, challengeId);
-      if (userChallenge.amount < amount) {
-        await updateUserChallenge(user.id, challengeId, new Date(), amount);
+      for (let challenge of Object.values(challenges)) {
+        if (!challenge) {
+          continue;
+        }
+        if (amount > challenge.fixed_amount) {
+          await getUserChallenge(user.id, challenge.id);
+          await updateUserChallenge(
+            user.id,
+            challenge.id,
+            new Date(),
+            challenge.reward
+          );
+        }
       }
     } catch (e) {
       console.error(`Error checking delegate record for ${user.id}: ${e}`);

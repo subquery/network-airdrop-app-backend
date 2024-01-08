@@ -20,9 +20,10 @@ export interface UsersTable {
 export interface ChallengesTable {
   id: Generated<number>;
   name: string;
+  fixed_amount: number;
+  tag: string;
   reward: number;
   reward_type: "FIXED" | "MULTIPLE";
-  multiple_denominator: string;
   description: string;
   cta: string;
   cta_label: string;

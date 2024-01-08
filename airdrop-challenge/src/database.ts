@@ -62,6 +62,14 @@ export async function createNewUser(
     .executeTakeFirstOrThrow();
 }
 
+export async function getUserByEmail(email: string): Promise<User | undefined> {
+  return await db
+    .selectFrom("users")
+    .selectAll()
+    .where("email", "=", email)
+    .executeTakeFirst();
+}
+
 export async function getReferringUserID(
   referrral_code: string
 ): Promise<string> {
@@ -293,11 +301,14 @@ export async function updateUserChallenge(
     .execute();
 }
 
-export async function getChallengeId(challengeName: string) {
-  const { id } = await db
+export async function getChallenge(challenge: string): Promise<Challenge> {
+  return await db
     .selectFrom("challenges")
-    .select("id")
-    .where("name", "=", challengeName)
+    .selectAll()
+    .where("tag", "=", challenge)
     .executeTakeFirstOrThrow();
-  return id;
+}
+
+export async function getChallengeId(challenge: string) {
+  return await getChallenge(challenge).then((c) => c.id);
 }
