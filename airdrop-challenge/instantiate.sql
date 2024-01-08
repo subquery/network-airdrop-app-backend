@@ -34,10 +34,22 @@ CREATE TABLE user_challenges (
 	CONSTRAINT user_challenges_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
 );
 
-INSERT INTO challenges (name, reward, reward_type, multiple_denominator, description, cta, cta_label) VALUES 
-('Reach Level 2 on Zealy', 400, 'FIXED', '', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
-('Reach Level 4 on Zealy', 700, 'FIXED', '', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
-('Get Whitelisted for SQT Token Launch', 2000, 'FIXED', '', 'Description', 'https://subquery.foundation/sale', 'Start Whitelisting'),
-('Acquire kSQT via Kepler Swap', 2, 'MULTIPLE', 'for each kSQT swapped!', 'Description', 'https://kepler.subquery.network/swap', 'Swap kSQT today'),
-('Delegate on Kepler', 4, 'MULTIPLE', 'for each kSQT delegated!', 'Description', 'https://kepler.subquery.network/delegator', 'Delegate now'),
-('Claim Rewards on Kepler', 5, 'MULTIPLE', 'for each kSQT claimed!', 'Description', 'https://kepler.subquery.network/profile/rewards', 'Claim Rewards Now');
+INSERT INTO challenges (name, reward, reward_type, description, cta, cta_label) VALUES 
+('Reach 1,000 XP on Zealy', 400, 'FIXED', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
+('Reach 5,000 XP on Zealy', 500, 'FIXED', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
+('Reach 10,000 XP on Zealy', 500, 'FIXED', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
+('Reach 15,000 XP on Zealy', 500, 'FIXED', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
+('Reach 20,000 XP on Zealy', 500, 'FIXED', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
+('Reach 25,000 XP on Zealy', 500, 'FIXED', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
+('Reach 30,000 XP on Zealy', 500, 'FIXED', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
+('Get Whitelisted for SQT Token Launch', 2000, 'FIXED', 'Description', 'https://subquery.foundation/sale', 'Start Whitelisting'),
+('Acquire 500 kSQT via Kepler Swap', 500, 'FIXED', 'Description', 'https://kepler.subquery.network/swap', 'Swap kSQT today'),
+('Acquire 1,000 kSQT via Kepler Swap', 500, 'FIXED', 'Description', 'https://kepler.subquery.network/swap', 'Swap kSQT today'),
+('Acquire 1,500 kSQT via Kepler Swap', 500, 'FIXED', 'Description', 'https://kepler.subquery.network/swap', 'Swap kSQT today'),
+('Acquire 2,000 kSQT via Kepler Swap', 500, 'FIXED', 'Description', 'https://kepler.subquery.network/swap', 'Swap kSQT today'),
+('Delegate 500 kSQT on Kepler', 400, 'FIXED', 'Description', 'https://kepler.subquery.network/delegator', 'Delegate now'),
+('Delegate 1,000 kSQT on Kepler', 400, 'FIXED', 'Description', 'https://kepler.subquery.network/delegator', 'Delegate now'),
+('Delegate 1,500 kSQT on Kepler', 400, 'FIXED', 'Description', 'https://kepler.subquery.network/delegator', 'Delegate now'),
+('Delegate 2,000 kSQT on Kepler', 400, 'FIXED', 'Description', 'https://kepler.subquery.network/delegator', 'Delegate now'),
+('Claim 100 kSQT as Rewards on Kepler', 400, 'FIXED', 'Description', 'https://kepler.subquery.network/profile/rewards', 'Claim Rewards Now'),
+('Claim 200 kSQT as Rewards on Kepler', 400, 'FIXED', 'Description', 'https://kepler.subquery.network/profile/rewards', 'Claim Rewards Now');
