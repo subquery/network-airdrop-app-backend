@@ -36,10 +36,10 @@ jobs:
         if: github.event.inputs.isLatest == 'false'
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./airdrop-challenge
           push: true
           platforms: amd64
-          file: ./airdrop-challenge/Dockerfile
+          file: ./Dockerfile
           tags: subquerynetwork/airdrop-challenge-backend:${{ steps.get-version.outputs.VERSION }}
           build-args: RELEASE_VERSION=${{ steps.get-version.outputs.VERSION }}
 
@@ -47,7 +47,7 @@ jobs:
         if: github.event.inputs.isLatest == 'true'
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./airdrop-challenge
           push: true
           platforms: amd64
           file: ./Dockerfile
