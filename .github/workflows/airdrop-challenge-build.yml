@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 100
-          token: ${{ secrets.REPO_TOKEN }}
+          # token: ${{ secrets.REPO_TOKEN }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -40,7 +40,7 @@ jobs:
           push: true
           platforms: amd64
           file: ./airdrop-challenge/Dockerfile
-          tags: subquerynetwork/airdrop-challenge-backend:v${{ steps.get-version.outputs.VERSION }}
+          tags: subquerynetwork/airdrop-challenge-backend:${{ steps.get-version.outputs.VERSION }}
           build-args: RELEASE_VERSION=${{ steps.get-version.outputs.VERSION }}
 
       - name: Build and push
@@ -51,7 +51,7 @@ jobs:
           push: true
           platforms: amd64
           file: ./Dockerfile
-          tags: subquerynetwork/airdrop-challenge-backend:v${{ steps.get-version.outputs.VERSION }},subquerynetwork/airdrop-challenge-backend:latest
+          tags: subquerynetwork/airdrop-challenge-backend:${{ steps.get-version.outputs.VERSION }},subquerynetwork/airdrop-challenge-backend:latest
           build-args: RELEASE_VERSION=${{ steps.get-version.outputs.VERSION }}
 
       - name: Image digest
