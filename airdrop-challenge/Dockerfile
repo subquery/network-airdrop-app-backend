@@ -5,8 +5,7 @@ WORKDIR /usr/src/app
 COPY ./ ./
 
 RUN rm -rf node_modules
-RUN yarn install --prod --link-duplicates
-RUN yarn build
+RUN yarn && yarn build
 
 
 FROM node:18-alpine
