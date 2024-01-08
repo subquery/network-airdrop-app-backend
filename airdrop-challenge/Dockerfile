@@ -4,8 +4,6 @@ WORKDIR /usr/src/app
 
 COPY ./ ./
 
-WORKDIR /usr/src/app
-
 RUN rm -rf node_modules
 RUN yarn install --prod --link-duplicates
 
