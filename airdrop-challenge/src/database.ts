@@ -40,7 +40,8 @@ export async function createNewUser(
   referring_user_id: string | undefined
 ) {
   const newUser: NewUser = {
-    ...signup,
+    id: signup.address,
+    email: signup.email,
     verified_email: false,
     raw_score: 200,
     referral_count: referring_user_id ? 1 : 0,
@@ -131,7 +132,7 @@ export async function getLeaderboard(
   const topFiveSummary: LeaderboardRecordResponse[] = sortedUsersWithScore
     .slice(0, 5)
     .map((u, i) => ({
-      rank: i,
+      rank: i + 1,
       name: u.id,
       raw_score: u.raw_score,
       referral_multiplier: u.referral_count + 1,
@@ -141,7 +142,7 @@ export async function getLeaderboard(
   const userSummary: LeaderboardRecordResponse[] = sortedUsersWithScore
     .slice(startIndex, startIndex + 5)
     .map((u, i) => ({
-      rank: startIndex + i,
+      rank: startIndex + i + 1,
       name: u.id,
       raw_score: u.raw_score,
       referral_multiplier: u.referral_count + 1,
@@ -192,7 +193,7 @@ async function getCurrentUserRank(userID: string): Promise<number> {
     }))
     .sort((a, b) => (a.total_score > b.total_score ? -1 : 1));
 
-  return sortedUsersWithScore.findIndex((u) => u.id === userID);
+  return sortedUsersWithScore.findIndex((u) => u.id === userID) + 1;
 }
 
 export async function initNewUserChallenge(

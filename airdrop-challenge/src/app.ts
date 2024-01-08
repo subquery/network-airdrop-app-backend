@@ -24,28 +24,32 @@ app.get<{}, MessageResponse>("/", (req, res) => {
   });
 });
 
-app.post<{}, UserResponse>("/signup", async (req, res) => {
-  console.log("Got signup request");
-  const signup = req.body as UserSignupRequest;
-  const referral_code = signup.referral_code;
-  let referring_user_id: string | undefined = undefined;
-  if (referral_code) {
-    referring_user_id = await getReferringUserID(referral_code);
+app.post<{}, UserResponse>("/signup", async (req, res, next) => {
+  try {
+    console.log("Got signup request");
+    const signup = req.body as UserSignupRequest;
+    const referral_code = signup.referral_code;
+    let referring_user_id: string | undefined = undefined;
+    if (referral_code) {
+      referring_user_id = await getReferringUserID(referral_code);
+    }
+    await createNewUser(signup, referring_user_id);
+
+    // Signup user in SendGrid marketing
+    // await fetch("https://signup.subquery.network/subscribe", {
+    //   method: "post",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     email: signup.email,
+    //   }),
+    // });
+
+    res.sendStatus(201);
+  } catch (e) {
+    next(e);
   }
-  await createNewUser(signup, referring_user_id);
-
-  // Signup user in SendGrid marketing
-  await fetch("https://signup.subquery.network/subscribe", {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email: signup.email,
-    }),
-  });
-
-  res.sendStatus(201);
 });
 
 // We don't need this
