@@ -3,6 +3,7 @@ import { checkKYCStatus } from "./kyc-whitelisted";
 import { checkDelegateRecord } from "./delegate-record";
 import { checkRewardRecord } from "./reward-record";
 import { checkZealyPoints } from "./zealy-points";
+import { updateUsers } from "./user";
 
 let minute = 0;
 
@@ -19,7 +20,7 @@ CronJob.from({
   onTick: checkKYCStatus,
   timeZone: "UTC",
   start: true,
-  runOnInit: false,
+  // runOnInit: true,
 });
 
 CronJob.from({
@@ -27,7 +28,7 @@ CronJob.from({
   onTick: checkDelegateRecord,
   timeZone: "UTC",
   start: true,
-  runOnInit: false,
+  // runOnInit: true,
 });
 
 CronJob.from({
@@ -35,7 +36,7 @@ CronJob.from({
   onTick: checkRewardRecord,
   timeZone: "UTC",
   start: true,
-  runOnInit: false,
+  // runOnInit: true,
 });
 
 CronJob.from({
@@ -43,5 +44,13 @@ CronJob.from({
   onTick: checkZealyPoints,
   timeZone: "UTC",
   start: true,
-  runOnInit: false,
+  // runOnInit: true,
+});
+
+CronJob.from({
+  cronTime: `0 ${nextMinute()} * * * *`,
+  onTick: updateUsers,
+  timeZone: "UTC",
+  start: true,
+  // runOnInit: true,
 });

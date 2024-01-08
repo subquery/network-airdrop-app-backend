@@ -36,6 +36,10 @@ const db = new Kysely<Database>({
   log: ["query"],
 });
 
+export function getDB() {
+  return db;
+}
+
 export async function createNewUser(
   signup: UserSignupRequest,
   referring_user_id: string | undefined
@@ -53,6 +57,9 @@ export async function createNewUser(
     verify_email_code: Array.from(Array(12), () =>
       Math.floor(Math.random() * 36).toString(36)
     ).join(""),
+    challenge_score: 0,
+    total_score: 0,
+    rank: 1000000,
   };
 
   return await db

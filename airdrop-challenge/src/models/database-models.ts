@@ -15,6 +15,9 @@ export interface UsersTable {
   referral_code: string;
   referral_count: number;
   referring_user_id: string | undefined;
+  challenge_score: number;
+  total_score: number;
+  rank: number;
 }
 
 export interface ChallengesTable {

@@ -10,6 +10,9 @@ CREATE TABLE
 		referral_code varchar(50) NOT NULL,
 		referral_count int4 NOT NULL,
 		referring_user_id varchar(255) NULL,
+		challenge_score int4 NOT NULL DEFAULT 0,
+		total_score int4 NOT NULL DEFAULT 0,
+		"rank" int4 NULL,
 		CONSTRAINT users_email_unique UNIQUE (email),
 		CONSTRAINT users_pkey PRIMARY KEY (id),
 		CONSTRAINT users_referring_user_id_fkey FOREIGN KEY (referring_user_id) REFERENCES users (id)
