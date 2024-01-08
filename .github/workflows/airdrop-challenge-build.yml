@@ -39,7 +39,7 @@ jobs:
           context: ./airdrop-challenge
           push: true
           platforms: amd64
-          file: ./Dockerfile
+          # file: ./Dockerfile
           tags: subquerynetwork/airdrop-challenge-backend:${{ steps.get-version.outputs.VERSION }}
           build-args: RELEASE_VERSION=${{ steps.get-version.outputs.VERSION }}
 
@@ -50,7 +50,7 @@ jobs:
           context: ./airdrop-challenge
           push: true
           platforms: amd64
-          file: ./Dockerfile
+          # file: ./Dockerfile
           tags: subquerynetwork/airdrop-challenge-backend:${{ steps.get-version.outputs.VERSION }},subquerynetwork/airdrop-challenge-backend:latest
           build-args: RELEASE_VERSION=${{ steps.get-version.outputs.VERSION }}
 
