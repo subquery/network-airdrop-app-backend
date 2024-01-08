@@ -1,7 +1,8 @@
-export interface Challenge {
+export interface UserChallengeResponse {
   id: number;
   name: string;
   success: boolean;
+  success_date: number | undefined;
   reward: number;
   reward_type: "FIXED" | "MULTIPLE";
   description: string;

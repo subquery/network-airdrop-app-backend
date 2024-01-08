@@ -1,4 +1,4 @@
-export interface User {
+export interface UserResponse {
   address: string;
   email: string;
   verified_email: boolean;
