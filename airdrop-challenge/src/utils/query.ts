@@ -9,6 +9,7 @@ export type SubqueryListOptions = {
   };
   query: string;
   type: string;
+  nodesName?: string;
   list: any[];
 };
 
@@ -27,7 +28,8 @@ export async function querySubqueryList(
       query: options.query,
     },
   });
-  options.list.push(...result.data.data[options.type].nodes);
+  const nodesName = options.nodesName || "nodes";
+  options.list.push(...result.data.data[options.type][nodesName]);
   if (options.list.length >= result.data.data[options.type].totalCount) {
     return options.list;
   }

@@ -4,6 +4,7 @@ import { checkDelegateRecord } from "./delegate-record";
 import { checkRewardRecord } from "./reward-record";
 import { checkZealyPoints } from "./zealy-points";
 import { updateUsers } from "./user";
+import { checkSwapRecord } from "./swap-record";
 
 let minute = 0;
 
@@ -42,6 +43,14 @@ CronJob.from({
 CronJob.from({
   cronTime: `0 ${nextMinute()} * * * *`,
   onTick: checkZealyPoints,
+  timeZone: "UTC",
+  start: true,
+  // runOnInit: true,
+});
+
+CronJob.from({
+  cronTime: `0 ${nextMinute()} * * * *`,
+  onTick: checkSwapRecord,
   timeZone: "UTC",
   start: true,
   // runOnInit: true,
