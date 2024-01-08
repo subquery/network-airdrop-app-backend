@@ -8,6 +8,7 @@ import {
 import { Challenge } from "../models/database-models";
 
 export async function checkKYCStatus() {
+  const startTime = Date.now();
   let challenge: Challenge;
   try {
     challenge = await getChallenge("whitelist-1");
@@ -37,5 +38,5 @@ export async function checkKYCStatus() {
       console.error(`Error checking KYC status for ${user.id}: ${e}`);
     }
   }
-  console.log(`Done checking KYC status`);
+  console.log(`Done checking KYC status. Took ${Date.now() - startTime}ms.`);
 }

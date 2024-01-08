@@ -22,6 +22,7 @@ async function initChallengeIds() {
 }
 
 export async function checkRewardRecord() {
+  const startTime = Date.now();
   try {
     await initChallengeIds();
   } catch (e) {
@@ -84,5 +85,5 @@ export async function checkRewardRecord() {
       console.error(`Error checking reward record for ${user.id}: ${e}`);
     }
   }
-  console.log(`Done checking reward record`);
+  console.log(`Done checking reward record. Took ${Date.now() - startTime}ms.`);
 }

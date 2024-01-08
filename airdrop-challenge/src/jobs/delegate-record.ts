@@ -24,6 +24,7 @@ async function initChallengeIds() {
 }
 
 export async function checkDelegateRecord() {
+  const startTime = Date.now();
   try {
     await initChallengeIds();
   } catch (e) {
@@ -88,5 +89,7 @@ export async function checkDelegateRecord() {
       console.error(`Error checking delegate record for ${user.id}: ${e}`);
     }
   }
-  console.log(`Done checking delegate record`);
+  console.log(
+    `Done checking delegate record. Took ${Date.now() - startTime}ms.`
+  );
 }

@@ -27,6 +27,7 @@ async function initChallengeIds() {
 }
 
 export async function checkZealyPoints() {
+  const startTime = Date.now();
   try {
     await initChallengeIds();
   } catch (e) {
@@ -74,7 +75,7 @@ export async function checkZealyPoints() {
       console.error(`Error checking zealy points for ${user.id}: ${e}`);
     }
   }
-  console.log(`Done checking zealy points`);
+  console.log(`Done checking zealy points. Took ${Date.now() - startTime}ms.`);
 }
 
 type ZealyUser = {
