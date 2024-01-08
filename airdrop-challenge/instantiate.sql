@@ -37,13 +37,9 @@ CREATE TABLE user_challenges (
 );
 
 INSERT INTO challenges (name, reward, reward_type, description, cta, cta_label) VALUES 
-('Reach 1,000 XP on Zealy', 400, 'FIXED', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
-('Reach 5,000 XP on Zealy', 500, 'FIXED', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
-('Reach 10,000 XP on Zealy', 500, 'FIXED', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
-('Reach 15,000 XP on Zealy', 500, 'FIXED', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
-('Reach 20,000 XP on Zealy', 500, 'FIXED', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
-('Reach 25,000 XP on Zealy', 500, 'FIXED', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
-('Reach 30,000 XP on Zealy', 500, 'FIXED', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
+('Reach 500 XP on Zealy', 500, 'FIXED', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
+('Reach 1,200 XP on Zealy', 1000, 'FIXED', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
+('Reach 2,200 XP on Zealy', 1000, 'FIXED', 'Description', 'https://zealy.io/c/subquerynetwork', 'Sign up to Zealy and Start'),
 ('Get Whitelisted for SQT Token Launch', 2000, 'FIXED', 'Description', 'https://subquery.foundation/sale', 'Start Whitelisting'),
 ('Acquire 500 kSQT via Kepler Swap', 500, 'FIXED', 'Description', 'https://kepler.subquery.network/swap', 'Swap kSQT today'),
 ('Acquire 1,000 kSQT via Kepler Swap', 500, 'FIXED', 'Description', 'https://kepler.subquery.network/swap', 'Swap kSQT today'),
